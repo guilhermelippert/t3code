@@ -1,3 +1,4 @@
+import { SettingOptionPreviews, SubmodulesIllustration } from "./SettingOptionPreviews";
 import {
   DEFAULT_SERVER_SETTINGS,
   type ModelSelection,
@@ -333,6 +334,30 @@ export function ProjectDefaultsSettings({ category }: { category: ProjectSetting
             settingKeys={["worktreeSubmodules"]}
             mixed={mixedSubmodules}
             {...searchableSetting("worktree-submodules")}
+            help={
+              <SettingOptionPreviews
+                options={[
+                  {
+                    label: "Skip",
+                    caption: "Submodules left empty",
+                    current: !mixedSubmodules && effective?.worktreeSubmodules === "none",
+                    illustration: <SubmodulesIllustration mode="none" />,
+                  },
+                  {
+                    label: "Top level only",
+                    caption: "Nested submodules left empty",
+                    current: !mixedSubmodules && effective?.worktreeSubmodules === "top-level",
+                    illustration: <SubmodulesIllustration mode="top-level" />,
+                  },
+                  {
+                    label: "Recursive",
+                    caption: "All submodules initialized",
+                    current: !mixedSubmodules && effective?.worktreeSubmodules === "recursive",
+                    illustration: <SubmodulesIllustration mode="recursive" />,
+                  },
+                ]}
+              />
+            }
             description={
               isProjectScope
                 ? "How new worktrees in this project populate git submodules."

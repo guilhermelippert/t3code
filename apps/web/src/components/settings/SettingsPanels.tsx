@@ -1,3 +1,8 @@
+import {
+  SettingOptionPreviews,
+  ProjectGroupingIllustration,
+  ProactivePanelsIllustration,
+} from "./SettingOptionPreviews";
 import { SettingsGroup } from "./SettingsGroup";
 import { NotificationSettings } from "./NotificationSettings";
 import { PRIVACY_POLICY_URL } from "../../legalLinks";
@@ -862,6 +867,24 @@ export function GeneralSettingsPanel() {
       <SettingsSection id="organization" title="Organization">
         <SettingsRow
           {...searchableSetting("project-grouping")}
+          help={
+            <SettingOptionPreviews
+              options={[
+                {
+                  label: "On",
+                  caption: "Same repo across environments shows once",
+                  current: isProjectGroupingEnabled(settings.sidebarProjectGroupingMode),
+                  illustration: <ProjectGroupingIllustration grouped />,
+                },
+                {
+                  label: "Off",
+                  caption: "Each project folder listed on its own",
+                  current: !isProjectGroupingEnabled(settings.sidebarProjectGroupingMode),
+                  illustration: <ProjectGroupingIllustration grouped={false} />,
+                },
+              ]}
+            />
+          }
           description="Combine matching repositories across environments."
           resetAction={
             settings.sidebarProjectGroupingMode !==
@@ -1325,6 +1348,24 @@ export function GeneralSettingsPanel() {
 
         <SettingsRow
           {...searchableSetting("proactive-panels")}
+          help={
+            <SettingOptionPreviews
+              options={[
+                {
+                  label: "On",
+                  caption: "Opens the PR, or Changes after big edits",
+                  current: settings.proactivePanelsEnabled,
+                  illustration: <ProactivePanelsIllustration enabled />,
+                },
+                {
+                  label: "Off",
+                  caption: "No automatic panel opening",
+                  current: !settings.proactivePanelsEnabled,
+                  illustration: <ProactivePanelsIllustration enabled={false} />,
+                },
+              ]}
+            />
+          }
           description="Open linked pull requests first. Otherwise, open Changes for edits to at least 3 files or 50 lines."
           resetAction={
             settings.proactivePanelsEnabled !== DEFAULT_UNIFIED_SETTINGS.proactivePanelsEnabled ? (

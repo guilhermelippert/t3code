@@ -15,6 +15,7 @@ import {
 import { cn } from "../../lib/utils";
 import { WorkspacePageContainer, type WorkspacePageWidth } from "../WorkspacePageContainer";
 import { Button } from "../ui/button";
+import { Popover, PopoverPopup, PopoverTrigger } from "../ui/popover";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "../ui/tooltip";
 import { useOptionalSettingsScope } from "./SettingsScopeContext";
 import { SettingsScopeSentence } from "./SettingsScopeSentence";
@@ -296,6 +297,7 @@ function projectOverrides(
 
 export function SettingsRow({
   title,
+  help,
   description,
   status,
   resetAction,
@@ -309,6 +311,7 @@ export function SettingsRow({
   ...rowProps
 }: Omit<ComponentPropsWithoutRef<"div">, "title"> & {
   title: ReactNode;
+  help?: ReactNode;
   description?: ReactNode;
   status?: ReactNode;
   resetAction?: ReactNode;
@@ -468,6 +471,30 @@ export function SettingsRow({
         <div className="min-w-0 flex-1 space-y-1">
           <div className="flex min-h-5 items-center gap-1.5">
             <h3 className="text-sm font-medium text-foreground">{title}</h3>
+            {help ? (
+              // Hover for mouse; click, tap, Enter, and Space for everything else.
+              <Popover>
+                <PopoverTrigger
+                  openOnHover
+                  delay={200}
+                  closeDelay={150}
+                  render={
+                    <Button
+                      size="icon-micro"
+                      variant="ghost-muted"
+                      aria-label={
+                        typeof title === "string" ? `About ${title}` : "About this setting"
+                      }
+                    >
+                      <InfoIcon className="size-3.5" />
+                    </Button>
+                  }
+                />
+                <PopoverPopup side="top" align="start" padding="none">
+                  {help}
+                </PopoverPopup>
+              </Popover>
+            ) : null}
             {renderedInheritance ? (
               <span
                 className={cn(
